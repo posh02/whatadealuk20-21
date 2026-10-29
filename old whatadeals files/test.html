@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Whatadeal.uk | Best Online Deals, Flash Sales & Discounts UK</title>
+<meta name="description" content="Find the best online deals, daily flash sales, and clearance items across UK retail nodes. Compare live prices and save up to 60% today!">
+<meta name="keywords" content="online deals, flash sale, shopping discounts UK, clearance sales, price tracker, cheap electronics, retail discounts">
+<link rel="canonical" href="https://whatadeal.uk" />
+<style>
+:root {
+  --nav-bg: #87ceeb;
+  --body-bg: #e0f2fe;
+  --text-dark: #0f1111;
+  --accent-orange: #0284c7;
+  --card-bg: #ffffff;
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: sans-serif;
+  background-color: var(--body-bg);
+  color: var(--text-dark);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.navbar {
+  background-color: var(--nav-bg);
+  color: #0f1111;
+  display: flex;
+  padding: 15px 40px;
+  font-size: 24px;
+  font-weight: bold;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+.navbar span {
+  color: #0369a1;
+}
+.navbar-content {
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+.search-container {
+  flex-grow: 1;
+  max-width: 500px;
+  position: relative;
+}
+.search-bar {
+  width: 100%;
+  padding: 10px 15px;
+  font-size: 15px;
+  border-radius: 4px;
+  border: none;
+  outline: none;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.main-container {
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 30px 20px;
+  flex-grow: 1;
+}
+.hero-banner {
+  background: linear-gradient(135deg, #bae6fd, #38bdf8);
+  color: #0f1111;
+  padding: 50px 40px;
+  border-radius: 6px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+.hero-banner h1 {
+  font-size: 32px;
+}
+.hero-banner p {
+  margin-top: 12px;
+  opacity: 0.9;
+  font-size: 18px;
+}
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+  min-height: 300px;
+}
+.product-card {
+  background-color: var(--card-bg);
+  border-radius: 6px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+}
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+.image-wrapper {
+  width: 100%;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f9ff;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  overflow: hidden;
+}
+.product-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transition: transform 0.3s;
+}
+.product-card:hover .product-img {
+  transform: scale(1.05);
+}
+.platform-badge {
+  display: inline-block;
+  align-self: flex-start;
+  padding: 3px 8px;
+  font-size: 11px;
+  font-weight: bold;
+  color: white;
+  background-color: var(--accent-orange);
+  border-radius: 4px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+.product-title {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 12px;
+  height: 42px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.product-price-row {
+  margin-top: auto;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+.current-price {
+  font-size: 22px;
+  font-weight: bold;
+}
+.price-subtext {
+  font-size: 12px;
+  color: #0369a1;
+  font-weight: bold;
+}
+.buy-btn {
+  width: 100%;
+  background-color: var(--accent-orange);
+  border: none;
+  color: white;
+  padding: 11px;
+  border-radius: 25px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  font-weight: bold;
+}
+.buy-btn:hover {
+  background-color: #0369a1;
+}
+</style>
+</head>
+<body>
+<nav class="navbar">
+  <div class="navbar-content">
+    <div>Whatadeal<span>.uk</span></div>
+    <div class="search-container">
+      <input type="text" id="dealSearchInput" class="search-bar" placeholder="Search live retail discounts..." oninput="filterDealListings()">
+    </div>
+  </div>
+</nav>
+<main class="main-container">
+  <section class="hero-banner">
+    <h1>UK Mega Flash Sale: Up to 60% Off Best Online Deals Today</h1>
+    <p>Your automated live companion tracking clearance items and hot retail discounts.</p>
+  </section>
+  <section class="product-grid" id="productGrid"></section>
+</main>
+<script>
+const localDealsCacheStore = [
+  {
+    "title": "Sony WH-1000XM4 Wireless Noise Cancelling Headphones - Black",
+    "price": 179.00,
+    "platform": "Amazon UK",
+    "url": "https://amazon.co.uk",
+    "image_url": "https://unsplash.com"
+  },
+  {
+    "title": "Nintendo Switch OLED Model - Neon Blue & Neon Red",
+    "price": 249.99,
+    "platform": "Argos",
+    "url": "https://argos.co.uk",
+    "image_url": "https://unsplash.com"
+  },
+  {
+    "title": "Apple iPad 10.2-inch (Wi-Fi, 64GB) - Space Grey",
+    "price": 299.00,
+    "platform": "Currys",
+    "url": "https://currys.co.uk",
+    "image_url": "https://unsplash.com"
+  },
+  {
+    "title": "ASUS Vivobook 15.6 Inch Core i5 8GB 512GB Laptop",
+    "price": 389.99,
+    "platform": "eBay UK",
+    "url": "https://ebay.co.uk",
+    "image_url": "https://unsplash.com"
+  },
+  {
+    "title": "Samsung 55 Inch 4K Ultra HD Smart TV",
+    "price": 349.00,
+    "platform": "Amazon UK",
+    "url": "https://amazon.co.uk",
+    "image_url": "https://unsplash.com"
+  },
+  {
+    "title": "Ninja Foodi Dual Zone Digital Air Fryer 7.6L",
+    "price": 149.00,
+    "platform": "Argos",
+    "url": "https://argos.co.uk",
+    "image_url": "https://unsplash.com"
+  },
+  {
+    "title": "Logitech G502 HERO High Performance Gaming Mouse",
+    "price": 34.99,
+    "platform": "Currys",
+    "url": "https://currys.co.uk",
+    "image_url": "https://unsplash.com"
+  },
+  {
+    "title": "Dyson V8 Cordless Vacuum Cleaner - Silver/Nickel",
+    "price": 229.00,
+    "platform": "eBay UK",
+    "url": "https://ebay.co.uk",
+    "image_url": "https://unsplash.com"
+  }
+];
+
+function renderDealCards(dealsArray) {
+  const grid = document.getElementById('productGrid');
+  grid.innerHTML = '';
+  if(dealsArray.length === 0) {
+    grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:50px 0; color:#565959; font-weight:600;">No matching retail promotions found. Try another search!</div>`;
+    return;
+  }
+  dealsArray.forEach(deal => {
+    const title = deal.title || 'Hot Shopping Deal';
+    const price = parseFloat(deal.price || 0).toFixed(2);
+    const platform = deal.platform || 'Store';
+    const url = deal.url || '#';
+    const image = deal.image_url || 'https://unsplash.com';
+    const card = document.createElement('div');
+    card.className = 'product-card';
+    card.innerHTML = `
+      <div class="image-wrapper">
+        <img src="${image}" alt="${title}" class="product-img" loading="lazy">
+      </div>
+      <span class="platform-badge">${platform}</span>
+      <h2 class="product-title">${title}</h2>
+      <div class="product-price-row">
+        <span class="current-price">£${price}</span>
+        <span class="price-subtext">(Best Price)</span>
+      </div>
+      <a href="${url}" target="_blank" rel="nofollow noopener noreferrer" class="buy-btn">View Retailer Deal</a>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function filterDealListings() {
+  const searchTerms = document.getElementById('dealSearchInput').value.toLowerCase().trim();
+  const filteredArray = localDealsCacheStore.filter(deal => {
+    return deal.title.toLowerCase().includes(searchTerms) || deal.platform.toLowerCase().includes(searchTerms);
+  });
+  renderDealCards(filteredArray);
+}
+
+window.onload = function() {
+  renderDealCards(localDealsCacheStore);
+};
+</script>
+</body>
+</html>

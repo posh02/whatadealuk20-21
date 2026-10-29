@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A hand-picked edit of useful finds from UK retailers. Browse example deals and discover new favourites at Whatadeal.uk.">
+    <meta property="og:title" content="Whatadeal.uk | Good finds, better prices">
+    <meta property="og:description" content="A hand-picked edit of useful finds from UK retailers.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://whatadeal.uk/">
+    <link rel="canonical" href="https://whatadeal.uk/">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=DM+Serif+Display&amp;display=swap"
+
+      rel="stylesheet">
+    <title>Whatadeal.uk | Good finds, better prices</title>
+    <style>
+    :root {
+      color-scheme: light;
+      --ink: #1d302d;
+      --muted: #64736e;
+      --paper: #f3f5ef;
+      --white: #fff;
+      --green: #164b3c;
+      --green-dark: #10372d;
+      --coral: #e85f49;
+      --yellow: #f4d36d;
+      --line: #dce3da;
+      --serif: "DM Serif Display", Georgia, serif;
+      --sans: "DM Sans", "Trebuchet MS", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    button, input, select { font: inherit; }
+    button, a, select { -webkit-tap-highlight-color: transparent; }
+    a { color: inherit; }
+    .skip-link {
+      position: absolute;
+      z-index: 20;
+      top: 8px;
+      left: 8px;
+      padding: 10px 14px;
+      transform: translateY(-150%);
+      background: var(--white);
+      color: var(--ink);
+    }
+    .skip-link:focus { transform: translateY(0); }
+
+    .site-header {
+      position: sticky;
+      z-index: 10;
+      top: 0;
+      background: var(--green-dark);
+      color: var(--white);
+    }
+    .header-inner {
+      width: min(1200px, calc(100% - 48px));
+      min-height: 76px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 34px;
+    }
+    .wordmark {
+      flex: 0 0 auto;
+      color: var(--white);
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0;
+      text-decoration: none;
+    }
+    .wordmark span { color: var(--yellow); }
+    .search-form {
+      display: flex;
+      flex: 1 1 400px;
+      max-width: 570px;
+      height: 44px;
+      margin-left: auto;
+      overflow: hidden;
+      border: 1px solid rgb(255 255 255 / 28%);
+      border-radius: 4px;
+      background: var(--white);
+    }
+    .search-form input {
+      width: 100%;
+      min-width: 0;
+      padding: 0 15px;
+      border: 0;
+      outline: 0;
+      color: var(--ink);
+      background: transparent;
+    }
+    .search-form input::placeholder { color: #78857f; }
+    .search-form:focus-within { outline: 2px solid var(--yellow); outline-offset: 2px; }
+    .search-form button {
+      display: grid;
+      width: 48px;
+      flex: 0 0 48px;
+      place-items: center;
+      border: 0;
+      background: var(--yellow);
+      color: var(--green-dark);
+      cursor: pointer;
+    }
+    .search-icon {
+      position: relative;
+      display: block;
+      width: 15px;
+      height: 15px;
+      border: 2px solid currentColor;
+      border-radius: 50%;
+    }
+    .search-icon::after {
+      position: absolute;
+      right: -5px;
+      bottom: -3px;
+      width: 7px;
+      height: 2px;
+      transform: rotate(45deg);
+      background: currentColor;
+      content: "";
+    }
+    .header-note { color: #d9e4dc; font-size: 12px; white-space: nowrap; }
+
+    .category-bar { background: var(--green); }
+    .category-list {
+      width: min(1200px, calc(100% - 48px));
+      min-height: 48px;
+      margin: 0 auto;
+      display: flex;
+      align-items: stretch;
+      gap: 7px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .category-list::-webkit-scrollbar { display: none; }
+    .category-button {
+      position: relative;
+      flex: 0 0 auto;
+      padding: 0 14px;
+      border: 0;
+      border-bottom: 3px solid transparent;
+      background: transparent;
+      color: #e7eee8;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .category-button:hover, .category-button[aria-pressed="true"] {
+      border-bottom-color: var(--yellow);
+      color: var(--white);
+    }
+    .category-button:focus-visible, .search-form button:focus-visible, .shop-button:focus-visible,
+    select:focus-visible { outline: 2px solid var(--coral); outline-offset: 3px; }
+
+    main { padding-bottom: 70px; }
+    .page-width { width: min(1200px, calc(100% - 48px)); margin: 0 auto; }
+    .affiliate-notice {
+      padding: 11px 24px;
+      border-bottom: 1px solid #e8dfbe;
+      background: #fff8df;
+      color: #5a4a20;
+      text-align: center;
+      font-size: 12px;
+    }
+    .hero {
+      position: relative;
+      min-height: 260px;
+      margin: 30px 0 38px;
+      padding: 38px 44px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 30px;
+      background: var(--green);
+      color: var(--white);
+      isolation: isolate;
+    }
+    .hero::after {
+      position: absolute;
+      z-index: -1;
+      top: -105px;
+      right: 12%;
+      width: 400px;
+      height: 400px;
+      border: 1px solid rgb(255 255 255 / 15%);
+      border-radius: 50%;
+      box-shadow: 0 0 0 42px rgb(255 255 255 / 5%), 0 0 0 84px rgb(255 255 255 / 4%);
+      content: "";
+    }
+    .hero-copy { max-width: 610px; animation: rise-in .55s ease both; }
+    .eyebrow {
+      margin: 0 0 12px;
+      color: var(--yellow);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+    }
+    h1, h2, h3, p { margin-top: 0; }
+    .hero h1 {
+      max-width: 540px;
+      margin-bottom: 10px;
+      font-family: var(--serif);
+      font-size: clamp(38px, 5vw, 58px);
+      font-weight: 400;
+      line-height: 1.02;
+    }
+    .hero-copy > p:last-child { max-width: 460px; margin-bottom: 0; color: #dce9df; font-size: 15px; }
+    .hero-stamp {
+      width: 154px;
+      height: 154px;
+      flex: 0 0 154px;
+      margin-right: 7%;
+      display: grid;
+      place-items: center;
+      transform: rotate(8deg);
+      border: 1px solid rgb(255 255 255 / 48%);
+      border-radius: 50%;
+      color: var(--yellow);
+      font-family: var(--serif);
+      font-size: 21px;
+      line-height: 1.15;
+      text-align: center;
+      animation: stamp-in .7s .12s ease both;
+    }
+
+    .section-heading {
+      margin-bottom: 20px;
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 18px;
+    }
+    .section-heading h2 {
+      margin-bottom: 4px;
+      font-family: var(--serif);
+      font-size: 31px;
+      font-weight: 400;
+      line-height: 1.15;
+    }
+    .section-heading p { margin-bottom: 0; color: var(--muted); font-size: 13px; }
+    .sort-control { display: flex; align-items: center; gap: 9px; color: var(--muted); font-size: 12px; }
+    .sort-control select {
+      min-height: 38px;
+      padding: 0 32px 0 10px;
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      background: var(--white);
+      color: var(--ink);
+      font-size: 13px;
+    }
+    .demo-note {
+      margin: 0 0 16px;
+      padding: 10px 13px;
+      border-left: 3px solid var(--coral);
+      background: #fff;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+    .product-card {
+      min-width: 0;
+      overflow: hidden;
+
+      border: 1px solid var(--line);
+      background: var(--white);
+      animation: rise-in .4s ease both;
+    }
+    .product-image-wrap {
+      position: relative;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      background: #e4e9e1;
+    }
+    .product-image {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      transition: transform .35s ease;
+    }
+    .product-card:hover .product-image { transform: scale(1.035); }
+    .sample-tag {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      padding: 5px 8px;
+      background: var(--yellow);
+      color: #453b1c;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .product-content { padding: 16px; }
+    .product-meta {
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+    .product-category { text-transform: uppercase; letter-spacing: .5px; }
+    .product-content h3 { min-height: 48px; margin-bottom: 10px; font-size: 17px; line-height: 1.4; }
+    .price-row { min-height: 36px; margin-bottom: 13px; display: flex; align-items: baseline; gap: 8px; }
+    .price-current { font-size: 21px; font-weight: 700; }
+    .price-was { color: #75817c; font-size: 13px; text-decoration: line-through; }
+    .shop-button {
+      width: 100%;
+      min-height: 42px;
+      padding: 9px 14px;
+      border: 0;
+      background: var(--green);
+      color: var(--white);
+      font-size: 13px;
+      font-weight: 700;
+      text-align: center;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .shop-button:hover:not(:disabled) { background: var(--green-dark); }
+    .shop-button:disabled { background: #e4e9e3; color: #5a6861; cursor: not-allowed; }
+    .empty-state {
+      grid-column: 1 / -1;
+      padding: 45px 20px;
+      border: 1px solid var(--line);
+      background: var(--white);
+      text-align: center;
+    }
+    .empty-state h3 { margin-bottom: 6px; font-family: var(--serif); font-size: 24px; font-weight: 400; }
+    .empty-state p { margin-bottom: 0; color: var(--muted); font-size: 13px; }
+    .site-footer { padding: 28px 24px; background: var(--green-dark); color: #d9e4dc; }
+    .footer-inner {
+      width: min(1200px, 100%);
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      font-size: 12px;
+    }
+    .footer-inner p { max-width: 650px; margin: 0; }
+    .footer-inner a { color: var(--yellow); }
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      clip-path: inset(50%);
+    }
+    @keyframes rise-in { from { opacity: 0; transform: translateY(9px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes stamp-in { from { opacity: 0; transform: rotate(-2deg) scale(.92); } to { opacity: 1; transform: rotate(8deg) scale(1); } }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+    @media (max-width: 760px) {
+      .header-inner { width: min(100% - 32px, 1200px); min-height: 68px; gap: 15px; flex-wrap: wrap; padding: 12px 0; }
+      .wordmark { font-size: 20px; }
+      .header-note { display: none; }
+      .search-form { flex-basis: 100%; max-width: none; order: 2; }
+      .category-list, .page-width { width: calc(100% - 32px); }
+      .hero { min-height: 235px; margin: 22px 0 30px; padding: 30px 24px; }
+      .hero-stamp { width: 112px; height: 112px; flex-basis: 112px; margin-right: 0; font-size: 16px; }
+      .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+      .product-content { padding: 12px; }
+      .product-content h3 { min-height: 67px; font-size: 15px; }
+      .section-heading h2 { font-size: 27px; }
+    }
+    @media (max-width: 480px) {
+      .affiliate-notice { padding: 10px 16px; font-size: 11px; }
+      .hero { min-height: auto; padding: 28px 20px; }
+      .hero h1 { font-size: 39px; }
+      .hero-copy > p:last-child { font-size: 13px; }
+      .hero-stamp { width: 80px; height: 80px; flex-basis: 80px; font-size: 12px; }
+      .section-heading { align-items: start; flex-direction: column; }
+      .sort-control { width: 100%; justify-content: space-between; }
+      .product-grid { grid-template-columns: 1fr; gap: 14px; }
+      .product-image-wrap { aspect-ratio: 16 / 9; }
+      .product-content h3 { min-height: 0; }
+      .footer-inner { flex-direction: column; }
+    }
+  </style>
+  </head>
+  <body> <a class="skip-link" href="#deals">Skip to deals</a>
+    <header class="site-header">
+      <div class="header-inner"> <a class="wordmark" href="/" aria-label="Whatadeal.uk home">Whata<span>deal</span>.uk</a>
+        <form class="search-form" id="search-form" role="search"> <label class="visually-hidden"
+
+            for="search-input">Search deals</label> <input id="search-input" placeholder="Search products and categories"
+
+            autocomplete="off" type="search"> <button type="submit" aria-label="Search"><span
+
+              class="search-icon" aria-hidden="true"></span></button> </form>
+        <span class="header-note">Good finds, better prices.</span> </div>
+    </header>
+    <nav class="category-bar" aria-label="Shop by category">
+      <div class="category-list" id="category-list"></div>
+    </nav>
+    <div class="affiliate-notice"> As an Amazon Associate I earn from qualifying
+      purchases. Whatadeal.uk may earn a commission from qualifying links, at no
+      extra cost to you. </div>
+    <main>
+      <div class="page-width">
+        <section class="hero" aria-labelledby="hero-title">
+          <div class="hero-copy">
+            <p class="eyebrow">A little less scrolling. A lot more finding.</p>
+            <h1 id="hero-title">Good finds.<br>
+              Better prices.</h1>
+            <p>A considered collection of useful things, from retailers worth
+              knowing.</p>
+          </div>
+          <div class="hero-stamp" aria-hidden="true">A good<br>
+            deal is a<br>
+            good feeling</div>
+        </section>
+        <section id="deals" aria-labelledby="deals-title">
+          <div class="section-heading">
+            <div>
+              <h2 id="deals-title">The latest finds</h2>
+              <p id="result-count" aria-live="polite"></p>
+            </div>
+            <label class="sort-control" for="sort-select"> Sort by
+              <select id="sort-select">
+                <option value="featured">Featured</option>
+                <option value="price-low">Price: low to high</option>
+                <option value="price-high">Price: high to low</option>
+                <option value="discount">Biggest discount</option>
+              </select>
+            </label> </div>
+          <p class="demo-note">Please note that Amazon may change the prices at
+            any time. All prices on Amazon are correct at the time of your
+            purchase.</p>
+          <div class="product-grid" id="product-grid" aria-live="polite"></div>
+        </section>
+      </div>
+    </main>
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <p>Some links on Whatadeal.uk may be affiliate links. If you buy through
+          one, we may receive a commission; your price stays the same.</p>
+        <p>Prices and availability can change. Always confirm details with the
+          retailer.</p>
+      </div>
+    </footer>
+    <script>
+    const amazonAffiliateTag = "whatadealuk20-21";
+
+    const products = [
+      {
+        name: "Wireless over-ear headphones",
+        category: "Tech",
+        retailer: "Example retailer",
+        price: 49.99,
+        wasPrice: 79.99,
+        image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=900&q=80"
+      },
+      {
+        name: "Compact air fryer for everyday cooking",
+        category: "Home",
+        retailer: "Example retailer",
+        price: 59.00,
+        wasPrice: 89.00,
+        image: "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=900&q=80"
+      },
+      {
+        name: "Lightweight everyday trainers",
+        category: "Fashion",
+        retailer: "Example retailer",
+        price: 42.50,
+        wasPrice: 65.00,
+        image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=80"
+      },
+      {
+        name: "Portable speaker for weekends away",
+        category: "Tech",
+        retailer: "Example retailer",
+        price: 35.00,
+        wasPrice: 49.99,
+        image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?auto=format&fit=crop&w=900&q=80"
+      },
+      {
+        name: "Minimal dial everyday watch",
+        category: "Fashion",
+        retailer: "Example retailer",
+        price: 54.95,
+        wasPrice: 74.95,
+        image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=900&q=80"
+      },
+      {
+        name: "Warm-glow reading lamp",
+        category: "Home",
+        retailer: "Example retailer",
+        price: 28.00,
+        wasPrice: 39.00,
+        image: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=900&q=80"
+      }
+    ];
+
+    const grid = document.querySelector("#product-grid");
+    const searchInput = document.querySelector("#search-input");
+    const sortSelect = document.querySelector("#sort-select");
+    const resultCount = document.querySelector("#result-count");
+    const categoryList = document.querySelector("#category-list");
+    let activeCategory = "All finds";
+
+    function amazonSearchUrl(product) {
+      const params = new URLSearchParams({ k: product.name, tag: amazonAffiliateTag });
+      return `https://www.amazon.co.uk/s?${params.toString()}`;
+    }
+
+    const formatPrice = (price) => new Intl.NumberFormat("en-GB", {
+      style: "currency",
+      currency: "GBP"
+    }).format(price);
+
+    function renderCategories() {
+      const categories = ["All finds", ...new Set(products.map((product) => product.category))];
+      categoryList.innerHTML = categories.map((category) => `
+        <button class="category-button" type="button" data-category="${category}" aria-pressed="${category === activeCategory}">
+          ${category}
+        </button>
+      `).join("");
+    }
+
+    function renderProducts() {
+      const query = searchInput.value.trim().toLocaleLowerCase("en-GB");
+      let visibleProducts = products.filter((product) => {
+        const matchesCategory = activeCategory === "All finds" || product.category === activeCategory;
+        const searchableText = `${product.name} ${product.category} ${product.retailer}`.toLocaleLowerCase("en-GB");
+        return matchesCategory && searchableText.includes(query);
+      });
+
+      if (sortSelect.value === "price-low") visibleProducts.sort((a, b) => a.price - b.price);
+      if (sortSelect.value === "price-high") visibleProducts.sort((a, b) => b.price - a.price);
+      if (sortSelect.value === "discount") {
+        visibleProducts.sort((a, b) => (b.wasPrice - b.price) / b.wasPrice - (a.wasPrice - a.price) / a.wasPrice);
+      }
+
+      resultCount.textContent = `${visibleProducts.length} sample ${visibleProducts.length === 1 ? "find" : "finds"}`;
+      if (visibleProducts.length === 0) {
+        grid.innerHTML = '<div class="empty-state"><h3>No finds here just yet</h3><p>Try a different search or choose another category.</p></div>';
+        return;
+      }
+
+      grid.innerHTML = visibleProducts.map((product, index) => {
+        const shopButton = `<a class="shop-button" href="${amazonSearchUrl(product)}" target="_blank" rel="sponsored noopener noreferrer">Find on Amazon UK</a>`;
+        return `
+          <article class="product-card" style="animation-delay: ${Math.min(index, 5) * 55}ms">
+            <div class="product-image-wrap">
+              <img class="product-image" src="${product.image}" alt="Example image for ${product.name}" loading="lazy" width="900" height="675">
+              <span class="sample-tag">Example</span>
+            </div>
+            <div class="product-content">
+              <div class="product-meta"><span class="product-category">${product.category}</span><span>${product.retailer}</span></div>
+              <h3>${product.name}</h3>
+              <div class="price-row"><span class="price-current">${formatPrice(product.price)}</span><span class="price-was">${formatPrice(product.wasPrice)}</span></div>
+              ${shopButton}
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    categoryList.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-category]");
+      if (!button) return;
+      activeCategory = button.dataset.category;
+      renderCategories();
+      renderProducts();
+    });
+
+    document.querySelector("#search-form").addEventListener("submit", (event) => event.preventDefault());
+    searchInput.addEventListener("input", renderProducts);
+    sortSelect.addEventListener("change", renderProducts);
+    renderCategories();
+    renderProducts();
+  </script>
+  </body>
+</html>

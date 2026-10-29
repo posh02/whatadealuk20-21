@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whatadeal.uk | Best Online Deals, Flash Sales & Discounts UK</title>
+    <meta name="description" content="Find the best online deals, daily flash sales, and clearance items across UK retail nodes. Compare live prices and save up to 60% today!">
+    <meta name="keywords" content="online deals, flash sale, shopping discounts UK, clearance sales, price tracker, cheap electronics, retail discounts">
+    <link rel="canonical" href="https://whatadeal.uk" />
+    
+    <!-- Link updated to target the file inside your css/ folder -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div>Whatadeal<span>.uk</span></div>
+            <div class="search-container">
+                <input type="text" id="dealSearchInput" class="search-bar" placeholder="Search live retail discounts..." oninput="filterDealListings()">
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-container">
+        <section class="hero-banner">
+            <h1>UK Mega Flash Sale: Up to 60% Off Best Online Deals Today</h1>
+            <p>Your automated live companion tracking clearance items and hot retail discounts.</p>
+        </section>
+        
+        <section class="product-grid" id="productGrid"></section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-copyright">
+                &copy; 2026 @whatadeal. All rights reserved.
+            </div>
+            <div class="footer-links">
+                <a href="#">Home</a>
+                <a href="#">About Us</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms & Conditions</a>
+                <a href="#">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script source updated to target the file inside your js/ folder -->
+    <script src="js/script.js"></script>
+</body>
+</html>

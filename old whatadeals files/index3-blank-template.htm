@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whatadeal.uk | Best Online Deals, Flash Sales & Discounts UK</title>
+    <meta name="description" content="Find the best online deals, daily flash sales, and clearance items across UK retail nodes. Compare live prices and save up to 60% today!">
+    <meta name="keywords" content="online deals, flash sale, shopping discounts UK, clearance sales, price tracker, cheap electronics, retail discounts">
+    <link rel="canonical" href="https://whatadeal.uk" />
+
+    <!-- Google Site Verification Key -->
+    <meta name="google-site-verification" content="iGZYDSbfJ_t2PzSNgvmN7YsjIJCftds2YY6E386eArY" />
+
+    <!-- Open Graph & Social Meta Tags -->
+    <meta property="og:title" content="Whatadeal.uk | Best Online Deals & Flash Sales" />
+    <meta property="og:description" content="Daily flash sales and clearance items with up to 60% discount" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://whatadeal.uk" />
+
+    <style>
+        :root {
+            /* Corporate Retail Color Foundations */
+            --bg-page: #f4f6f8;           /* Soft retail grey-blue canvas */
+            --bg-card: #ffffff;           /* Clean stark white modules */
+            --text-main: #213038;         /* Premium low-fatigue slate grey */
+            --text-muted: #56707a;        /* Balanced grey for metadata and subtitles */
+            
+            --brand-primary: #0a1147;     /* Deep enterprise indigo */
+            --brand-subnav: #161e57;      /* Structural mid-indigo */
+            
+            /* Sharp Attention Accents (Currys-Inspired Conversion Hubs) */
+            --action-pink: #e5006d;       /* High-contrast promotional highlight */
+            --action-pink-hover: #c2005a; /* Smooth state shift for links */
+            --border-subtle: #cdd8df;     /* Defined boundaries without geometric clutter */
+            --success-green: #328636;     /* Confirmed value checkmarks */
+        }
+
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+        }
+
+        body { 
+            font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
+            background-color: var(--bg-page); 
+            color: var(--text-main); 
+            display: flex; 
+            flex-direction: column; 
+            min-height: 100vh; 
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar { 
+            background-color: var(--brand-primary); 
+            color: #ffffff; 
+            display: flex; 
+            padding: 16px 24px; 
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar-content { 
+            max-width: 1400px; 
+            width: 100%; 
+            margin: 0 auto; 
+            display: flex; 
+            align-items: center; 
+            gap: 32px; 
+        }
+
+        .navbar .logo { 
+            font-size: 24px; 
+            font-weight: 700;
+            letter-spacing: -0.5px; 
+            cursor: pointer; 
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .navbar .logo span { 
+            color: var(--action-pink); 
+        }
+
+        .search-container { 
+            flex-grow: 1; 
+            max-width: 650px; 
+            display: flex; 
+            background: #ffffff;
+            border-radius: 24px; 
+            border: 2px solid var(--border-subtle);
+            overflow: hidden; 
+            transition: border-color 0.2s ease;
+        }
+
+        .search-container:focus-within { 
+            border-color: var(--brand-subnav);
+        }
+
+        .search-bar { 
+            width: 100%; 
+            padding: 10px 20px; 
+            font-size: 15px; 
+            border: none; 
+            outline: none; 
+            color: var(--text-main);
+            background: transparent;
+        }
+
+        .search-btn { 
+            background-color: #ffffff; 
+            border: none; 
+            width: 48px; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+
+        /* ===== SUB NAVBAR ===== */
+        .sub-navbar { 
+            background-color: var(--brand-subnav); 
+            color: #ffffff; 
+            padding: 0 24px; 
+            position: sticky;
+            top: 68px;
+            z-index: 99;
+        }
+
+        .sub-navbar-content { 
+            max-width: 1400px; 
+            width: 100%; 
+            margin: 0 auto; 
+            display: flex; 
+            gap: 12px; 
+            overflow-x: auto; 
+            scrollbar-width: none;
+        }
+        .sub-navbar-content::-webkit-scrollbar { display: none; }
+
+        .sub-navbar a { 
+            white-space: nowrap; 
+            color: #e9eaeb; 
+            text-decoration: none;
+            cursor: pointer; 
+            padding: 14px 16px; 
+            font-size: 14px; 
+            font-weight: 600;
+            display: inline-block;
+            transition: all 0.15s ease; 
+            border-bottom: 3px solid transparent;
+        }
+
+        .sub-navbar a:hover, .sub-navbar a.active { 
+            color: #ffffff;
+            border-bottom-color: var(--action-pink);
+        }
+
+        /* ===== MAIN CONTAINER ===== */
+        .main-container { 
+            max-width: 1400px; 
+            width: 100%; 
+            margin: 0 auto; 
+            padding: 32px 24px; 
+            flex-grow: 1; 
+        }
+
+        /* ===== PROMOTIONAL DISPLAY BLOCK ===== */
+        .promo-hero { 
+            background: #ffffff;
+            padding: 32px; 
+            border-radius: 10px; 
+            margin-bottom: 32px; 
+            border: 1px solid var(--border-subtle);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .promo-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background-color: var(--action-pink);
+        }
+
+        .promo-info h1 {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+
+        .promo-info p {
+            color: var(--text-muted);
+            font-size: 15px;
+        }
+
+        /* ===== LIVE DISCOUNT MATRIX (COMPARISON TABLE) ===== */
+        .table-container {
+            width: 100%;
+            background: var(--bg-card);
+            border-radius: 10px;
+            border: 1px solid var(--border-subtle);
+            overflow-x: auto;
+            margin-bottom: 32px;
+        }
+
+        .deal-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .deal-table th {
+            background-color: #e9eaeb;
+            color: var(--text-main);
+            font-weight: 700;
+            padding: 16px;
+            border-bottom: 2px solid var(--brand-primary);
+        }
+
+        .deal-table td {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-subtle);
+            vertical-align: middle;
+        }
+
+        .deal-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        /* Price Callouts */
+        .price-current {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .price-was {
+            font-size: 13px;
+            color: var(--text-muted);
+            text-decoration: line-through;
+            margin-left: 6px;
+        }
+
+        .badge-discount {
+            background-color: var(--action-pink);
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        /* Action Buttons */
+        .cta-btn {
+            background-color: #ffffff;
+            color: var(--brand-primary);
+            border: 2px solid var(--brand-primary);
+            padding: 8px 20px;
+            font-size: 14px;
+            font-weight: 700;
+            border-radius: 20px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .cta-btn:hover {
+            background-color: var(--brand-primary);
+            color: #ffffff;
+        }
+
+        .cta-btn.highlight {
+            background-color: var(--action-pink);
+            color: #ffffff;
+            border-color: var(--action-pink);
+        }
+
+        .cta-btn.highlight:hover {
+            background-color: var(--action-pink-hover);
+            border-color: var(--action-pink-hover);
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="/" class="logo">Whata<span>deal</span>.uk</a>
+            <div class="search-container">
+                <input type="text" class="search-bar" placeholder="Search live clearance items & retail discounts...">
+                <button class="search-btn" aria-label="Search">??</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="sub-navbar">
+        <div class="sub-navbar-content">
+            <a href="#" class="active">All Live Sales</a>
+            <a href="#">TV & Audio</a>
+            <a href="#">Televisions</a>
+            <a href="#">Electronics</a>
+            <a href="#">Home & Kitchen</a>
+            <a href="#">Groceries</a>
+            <a href="#">Designer Aftershaves</a>
+        </div>
+    </div>
+

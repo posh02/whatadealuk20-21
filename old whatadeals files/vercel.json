@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/deals",
+      "destination": "https://supabase.co*"
+    }
+  ]
+}
