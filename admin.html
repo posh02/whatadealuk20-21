@@ -1,103 +1,171 @@
-<!DOCTYPE html>
-<html lang="en-GB">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="robots" content="noindex, nofollow">
-  <title>Deal manager | Whatadeal.uk</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      color-scheme: light;
-      --ink: #1d302d;
-      --muted: #64736e;
-      --paper: #f3f5ef;
-      --white: #fff;
-      --green: #164b3c;
-      --green-dark: #10372d;
-      --coral: #e85f49;
-      --line: #dce3da;
-      --serif: "DM Serif Display", Georgia, serif;
-      --sans: "DM Sans", "Trebuchet MS", sans-serif;
+const loginPanel = document.getElementById('login-panel');
+const feedPanel = document.getElementById('feed-panel');
+const sitePanel = document.getElementById('site-panel');
+const loginForm = document.getElementById('login-form');
+const feedForm = document.getElementById('feed-form');
+const siteForm = document.getElementById('site-form');
+const loginStatus = document.getElementById('login-status');
+const feedStatus = document.getElementById('feed-status');
+const siteStatus = document.getElementById('site-status');
+const feedSummary = document.getElementById('feed-summary');
+const logoutButton = document.getElementById('logout-button');
+
+async function apiRequest(url, options = {}) {
+  const response = await fetch(url, {
+    headers: {
+      ...(options.body instanceof FormData ? {} : { 'Content-Type': 'application/json' }),
+      ...(options.headers || {})
+    },
+    ...options
+  });
+
+  const contentType = response.headers.get('content-type') || '';
+  const payload = contentType.includes('application/json') ? await response.json() : await response.text();
+
+  if (!response.ok) {
+    throw new Error(typeof payload === 'string' ? payload : payload?.error || 'Request failed');
+  }
+
+  return payload;
+}
+
+function showPanelState(isAuthenticated) {
+  loginPanel.hidden = isAuthenticated;
+  feedPanel.hidden = !isAuthenticated;
+  sitePanel.hidden = !isAuthenticated;
+}
+
+async function checkSession() {
+  try {
+    const payload = await apiRequest('/api/admin/session');
+    if (payload.authenticated) {
+      showPanelState(true);
+      feedSummary.textContent = `Signed in as ${payload.user}.`;
+      await loadSiteSettings();
+    } else {
+      showPanelState(false);
     }
-    * { box-sizing: border-box; }
-    body { min-height: 100vh; margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); }
-    .topbar { background: var(--green-dark); color: var(--white); }
-    .topbar-inner { width: min(1050px, calc(100% - 40px)); min-height: 68px; margin: auto; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
-    .brand { color: var(--white); font-size: 19px; font-weight: 700; text-decoration: none; }
-    .brand span { color: #f4d36d; }
-    .topbar a:last-child { color: #f4d36d; font-size: 13px; }
-    main { width: min(620px, calc(100% - 32px)); margin: 54px auto; }
-    .eyebrow { margin-bottom: 8px; color: var(--coral); font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
-    h1 { margin: 0 0 8px; font-family: var(--serif); font-size: 38px; font-weight: 400; }
-    .intro { margin: 0 0 28px; color: var(--muted); font-size: 14px; }
-    .panel { padding: 26px; border: 1px solid var(--line); background: var(--white); }
-    .panel[hidden] { display: none; }
-    h2 { margin: 0 0 18px; font-size: 17px; }
-    label { display: block; margin: 0 0 6px; font-size: 13px; font-weight: 600; }
-    input { width: 100%; min-height: 42px; margin-bottom: 16px; padding: 9px 11px; border: 1px solid #bfcac2; border-radius: 2px; background: var(--white); color: var(--ink); font: inherit; }
-    input:focus-visible, button:focus-visible, a:focus-visible { outline: 2px solid var(--coral); outline-offset: 3px; }
-    input[type="file"] { padding: 8px; }
-    button { min-height: 42px; padding: 9px 16px; border: 0; border-radius: 2px; background: var(--green); color: var(--white); font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
-    button:hover { background: var(--green-dark); }
-    button:disabled { opacity: .65; cursor: wait; }
-    .quiet-button { border: 1px solid var(--line); background: var(--white); color: var(--ink); }
-    .quiet-button:hover { background: var(--paper); }
-    .panel-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
-    .status { min-height: 22px; margin: 15px 0 0; color: var(--muted); font-size: 13px; }
-    .status[data-state="error"] { color: #a42d26; }
-    .status[data-state="success"] { color: var(--green); }
-    .helper { margin: 0 0 17px; color: var(--muted); font-size: 12px; line-height: 1.55; }
-    .account-row { margin: -4px 0 19px; display: flex; justify-content: space-between; gap: 14px; color: var(--muted); font-size: 12px; }
-    @media (max-width: 480px) { main { margin: 32px auto; } .panel { padding: 20px; } h1 { font-size: 33px; } }
-  </style>
-  <script src="/admin.js" defer></script>
-</head>
-<body>
-  <header class="topbar">
-    <div class="topbar-inner">
-      <a class="brand" href="/">Whata<span>deal</span>.uk</a>
-      <a href="/">View shop</a>
-    </div>
-  </header>
-  <main>
-    <p class="eyebrow">Private workspace</p>
-    <h1>Deal manager</h1>
-    <p class="intro">Sign in to replace the product feed shown in your public shop.</p>
+  } catch (error) {
+    console.warn('No active admin session', error);
+    showPanelState(false);
+  }
+}
 
-    <section class="panel" id="login-panel" aria-labelledby="login-title">
-      <h2 id="login-title">Admin sign in</h2>
-      <form id="login-form">
-        <label for="username">Username</label>
-        <input id="username" name="username" autocomplete="username" required>
-        <label for="password">Password</label>
-        <input id="password" name="password" type="password" autocomplete="current-password" required>
-        <button type="submit">Sign in</button>
-      </form>
-      <p class="status" id="login-status" role="status" aria-live="polite"></p>
-    </section>
+async function loadSiteSettings() {
+  try {
+    const settings = await apiRequest('/api/site-settings');
+    Object.entries(settings).forEach(([key, value]) => {
+      const field = document.getElementById(`site-${key}`);
+      if (field) {
+        field.value = value || '';
+      }
+    });
+  } catch (error) {
+    siteStatus.dataset.state = 'error';
+    siteStatus.textContent = 'Could not load site settings.';
+  }
+}
 
-    <section class="panel" id="feed-panel" aria-labelledby="feed-title" hidden>
-      <div class="account-row">
-        <span id="feed-summary">No feed loaded yet.</span>
-        <button class="quiet-button" id="logout-button" type="button">Sign out</button>
-      </div>
-      <h2 id="feed-title">Update product feed</h2>
-      <p class="helper">Upload a CSV with a product name/title and price. The server validates and stores the original privately; shoppers receive only the display fields needed for the shop.</p>
-      <form id="feed-form">
-        <label for="feed-file">CSV file</label>
-        <input id="feed-file" name="feed" type="file" accept=".csv,text/csv" required>
-        <div class="panel-actions">
-          <button id="upload-button" type="submit">Upload and publish</button>
-          <a href="/products-template.csv" download>Download CSV template</a>
-          <a href="/products-example.csv" download>Download example CSV</a>
-          <a href="/tv-deals.csv" download>Download TV test CSV</a>
-        </div>
-      </form>
-      <p class="status" id="feed-status" role="status" aria-live="polite"></p>
-    </section>
-  </main>
-</body>
-</html>
+loginForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  const formData = new FormData(loginForm);
+  const username = formData.get('username');
+  const password = formData.get('password');
+
+  loginStatus.textContent = 'Signing in...';
+  loginStatus.dataset.state = 'pending';
+
+  try {
+    const payload = await apiRequest('/api/admin/login', {
+      method: 'POST',
+      body: JSON.stringify({ username, password })
+    });
+
+    loginStatus.dataset.state = 'success';
+    loginStatus.textContent = `Signed in as ${payload.user}.`;
+    showPanelState(true);
+    feedSummary.textContent = `Signed in as ${payload.user}.`;
+    await loadSiteSettings();
+  } catch (error) {
+    loginStatus.dataset.state = 'error';
+    loginStatus.textContent = error.message;
+  }
+});
+
+feedForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  const fileInput = document.getElementById('feed-file');
+  const file = fileInput.files[0];
+
+  if (!file) {
+    feedStatus.dataset.state = 'error';
+    feedStatus.textContent = 'Choose a CSV file first.';
+    return;
+  }
+
+  feedStatus.textContent = 'Uploading and validating CSV...';
+  feedStatus.dataset.state = 'pending';
+
+  try {
+    const formData = new FormData();
+    formData.append('feed', file);
+
+    const payload = await apiRequest('/api/admin/feed', {
+      method: 'POST',
+      body: formData
+    });
+
+    feedStatus.dataset.state = 'success';
+    feedStatus.textContent = payload.message;
+    feedSummary.textContent = `Updated feed: ${payload.count} published items.`;
+    feedForm.reset();
+  } catch (error) {
+    feedStatus.dataset.state = 'error';
+    feedStatus.textContent = error.message;
+  }
+});
+
+siteForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  siteStatus.textContent = 'Saving homepage settings...';
+  siteStatus.dataset.state = 'pending';
+
+  const payload = {};
+  Object.keys(siteForm.elements).forEach((key) => {
+    const element = siteForm.elements[key];
+    if (!element || !element.name) return;
+    if (element.type === 'color') {
+      payload[element.name] = element.value;
+    } else {
+      payload[element.name] = element.value.trim();
+    }
+  });
+
+  try {
+    const result = await apiRequest('/api/admin/site-settings', {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    });
+
+    siteStatus.dataset.state = 'success';
+    siteStatus.textContent = result.message;
+  } catch (error) {
+    siteStatus.dataset.state = 'error';
+    siteStatus.textContent = error.message;
+  }
+});
+
+logoutButton.addEventListener('click', async () => {
+  try {
+    await apiRequest('/api/admin/logout', { method: 'POST' });
+    showPanelState(false);
+    loginStatus.textContent = '';
+    feedStatus.textContent = '';
+    siteStatus.textContent = '';
+  } catch (error) {
+    console.error('Logout failed', error);
+  }
+});
+
+checkSession();
+

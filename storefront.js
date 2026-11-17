@@ -1,165 +1,158 @@
-const grid = document.getElementById('product-grid');
-const categoryList = document.getElementById('category-list');
-const resultCount = document.getElementById('result-count');
-const sortSelect = document.getElementById('sort-select');
-const searchInput = document.getElementById('search-input');
-const searchForm = document.getElementById('search-form');
-const storeStatus = document.getElementById('store-status');
-
-const state = {
-  products: [],
-  activeCategory: 'all',
-  searchTerm: '',
-  sort: 'featured'
-};
-
-function formatPrice(value) {
-  const numeric = Number(value);
-  if (!Number.isFinite(numeric)) return '£0.00';
-  return new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(numeric);
-}
-
-function getVisibleProducts() {
-  let filtered = [...state.products];
-
-  if (state.activeCategory !== 'all') {
-    filtered = filtered.filter((product) => (product.category || '').toLowerCase() === state.activeCategory.toLowerCase());
-  }
-
-  if (state.searchTerm) {
-    const query = state.searchTerm.toLowerCase();
-    filtered = filtered.filter((product) => {
-      const haystack = [product.name, product.category, product.retailer].join(' ').toLowerCase();
-      return haystack.includes(query);
-    });
-  }
-
-  const sorted = [...filtered];
-  switch (state.sort) {
-    case 'price-low':
-      sorted.sort((a, b) => Number(a.price) - Number(b.price));
-      break;
-    case 'price-high':
-      sorted.sort((a, b) => Number(b.price) - Number(a.price));
-      break;
-    case 'discount':
-      sorted.sort((a, b) => {
-        const aDiscount = Number(a.wasPrice || 0) - Number(a.price || 0);
-        const bDiscount = Number(b.wasPrice || 0) - Number(b.price || 0);
-        return bDiscount - aDiscount;
-      });
-      break;
-    default:
-      sorted.sort((a, b) => Number(a.price) - Number(b.price));
-      break;
-  }
-
-  return sorted;
-}
-
-function renderCategories() {
-  const categories = ['all', ...new Set(state.products.map((product) => (product.category || 'General').trim()).filter(Boolean))];
-  categoryList.innerHTML = categories.map((category) => {
-    const label = category === 'all' ? 'All deals' : category;
-    const isActive = state.activeCategory === category;
-    return `<button type="button" class="category-button" data-category="${category}" aria-pressed="${isActive}">${label}</button>`;
-  }).join('');
-
-  categoryList.querySelectorAll('.category-button').forEach((button) => {
-    button.addEventListener('click', () => {
-      state.activeCategory = button.dataset.category;
-      render();
-    });
-  });
-}
-
-function renderProducts() {
-  const products = getVisibleProducts();
-
-  if (!products.length) {
-    resultCount.textContent = 'No matching deals yet.';
-    grid.innerHTML = `
-      <div class="empty-state">
-        <h3>No deals found</h3>
-        <p>Try another search or choose a different category.</p>
-      </div>
-    `;
-    return;
-  }
-
-  resultCount.textContent = `${products.length} deal${products.length === 1 ? '' : 's'} available`;
-  grid.innerHTML = products.map((product, index) => {
-    const image = product.image || 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=1200&q=80';
-    const wasPrice = product.wasPrice && Number(product.wasPrice) > Number(product.price) ? `<span class="price-was">${formatPrice(product.wasPrice)}</span>` : '';
-    const retailer = product.retailer || 'Retailer';
-    const title = product.name || product.title || 'Product';
-    const href = product.affiliateUrl || '#';
-    return `
-      <article class="product-card" style="animation-delay:${index * 40}ms">
-        <div class="product-image-wrap">
-          <img class="product-image" src="${image}" alt="${title}" loading="lazy">
-          <span class="sample-tag">${retailer}</span>
-        </div>
-        <div class="product-content">
-          <div class="product-meta">
-            <span class="product-category">${product.category || 'Featured'}</span>
-            <span>${retailer}</span>
-          </div>
-          <h3>${title}</h3>
-          <div class="price-row">
-            <span class="price-current">${formatPrice(product.price)}</span>
-            ${wasPrice}
-          </div>
-          <a class="shop-button" href="${href}" target="_blank" rel="noreferrer sponsored noopener">Shop now</a>
-        </div>
-      </article>
-    `;
-  }).join('');
-}
-
-function render() {
-  renderCategories();
-  renderProducts();
-}
-
-async function loadProducts() {
-  try {
-    storeStatus.textContent = 'Loading deals...';
-    const response = await fetch('/api/products');
-    if (!response.ok) {
-      throw new Error('Unable to load deals');
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Deal manager | Whatadeal.uk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #1d302d;
+      --muted: #64736e;
+      --paper: #f3f5ef;
+      --white: #fff;
+      --green: #164b3c;
+      --green-dark: #10372d;
+      --coral: #e85f49;
+      --line: #dce3da;
+      --serif: "DM Serif Display", Georgia, serif;
+      --sans: "DM Sans", "Trebuchet MS", sans-serif;
     }
+    * { box-sizing: border-box; }
+    body { min-height: 100vh; margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); }
+    .topbar { background: var(--green-dark); color: var(--white); }
+    .topbar-inner { width: min(1050px, calc(100% - 40px)); min-height: 68px; margin: auto; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .brand { color: var(--white); font-size: 19px; font-weight: 700; text-decoration: none; }
+    .brand span { color: #f4d36d; }
+    .topbar a:last-child { color: #f4d36d; font-size: 13px; }
+    main { width: min(820px, calc(100% - 32px)); margin: 54px auto; }
+    .eyebrow { margin-bottom: 8px; color: var(--coral); font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+    h1 { margin: 0 0 8px; font-family: var(--serif); font-size: 38px; font-weight: 400; }
+    .intro { margin: 0 0 28px; color: var(--muted); font-size: 14px; }
+    .panel { padding: 26px; border: 1px solid var(--line); background: var(--white); margin-bottom: 26px; }
+    .panel[hidden] { display: none; }
+    h2 { margin: 0 0 18px; font-size: 17px; }
+    label { display: block; margin: 0 0 6px; font-size: 13px; font-weight: 600; }
+    input, textarea { width: 100%; min-height: 42px; margin-bottom: 16px; padding: 9px 11px; border: 1px solid #bfcac2; border-radius: 2px; background: var(--white); color: var(--ink); font: inherit; }
+    textarea { min-height: 86px; resize: vertical; }
+    input[type="color"] { min-height: 44px; padding: 4px; }
+    input:focus-visible, button:focus-visible, a:focus-visible { outline: 2px solid var(--coral); outline-offset: 3px; }
+    input[type="file"] { padding: 8px; }
+    button { min-height: 42px; padding: 9px 16px; border: 0; border-radius: 2px; background: var(--green); color: var(--white); font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
+    button:hover { background: var(--green-dark); }
+    button:disabled { opacity: .65; cursor: wait; }
+    .quiet-button { border: 1px solid var(--line); background: var(--white); color: var(--ink); }
+    .quiet-button:hover { background: var(--paper); }
+    .panel-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+    .status { min-height: 22px; margin: 15px 0 0; color: var(--muted); font-size: 13px; }
+    .status[data-state="error"] { color: #a42d26; }
+    .status[data-state="success"] { color: var(--green); }
+    .helper { margin: 0 0 17px; color: var(--muted); font-size: 12px; line-height: 1.55; }
+    .account-row { margin: -4px 0 19px; display: flex; justify-content: space-between; gap: 14px; color: var(--muted); font-size: 12px; }
+    .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .field-grid .full { grid-column: 1 / -1; }
+    @media (max-width: 600px) { main { margin: 32px auto; } .panel { padding: 20px; } h1 { font-size: 33px; } .field-grid { grid-template-columns: 1fr; } }
+  </style>
+  <script src="/admin.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="/">Whata<span>deal</span>.uk</a>
+      <a href="/">View shop</a>
+    </div>
+  </header>
+  <main>
+    <p class="eyebrow">Private workspace</p>
+    <h1>Deal manager</h1>
+    <p class="intro">Sign in to update the storefront, homepage content, and product feed.</p>
 
-    const payload = await response.json();
-    state.products = payload.products || [];
-    render();
-    storeStatus.textContent = state.products.length ? `Showing ${state.products.length} deals.` : 'No deals available yet.';
-  } catch (error) {
-    console.error(error);
-    storeStatus.textContent = 'We could not load the products feed right now.';
-    grid.innerHTML = `
-      <div class="empty-state">
-        <h3>Feed unavailable</h3>
-        <p>Please check the local server and try again.</p>
+    <section class="panel" id="login-panel" aria-labelledby="login-title">
+      <h2 id="login-title">Admin sign in</h2>
+      <form id="login-form">
+        <label for="username">Username</label>
+        <input id="username" name="username" autocomplete="username" required>
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required>
+        <button type="submit">Sign in</button>
+      </form>
+      <p class="status" id="login-status" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="panel" id="feed-panel" aria-labelledby="feed-title" hidden>
+      <div class="account-row">
+        <span id="feed-summary">No feed loaded yet.</span>
+        <button class="quiet-button" id="logout-button" type="button">Sign out</button>
       </div>
-    `;
-  }
-}
 
-sortSelect.addEventListener('change', (event) => {
-  state.sort = event.target.value;
-  renderProducts();
-});
+      <h2 id="feed-title">Update product feed</h2>
+      <p class="helper">Upload a CSV with a product name/title and price. The server validates and stores the original privately; shoppers receive only the display fields needed for the shop.</p>
+      <form id="feed-form">
+        <label for="feed-file">CSV file</label>
+        <input id="feed-file" name="feed" type="file" accept=".csv,text/csv" required>
+        <div class="panel-actions">
+          <button id="upload-button" type="submit">Upload and publish</button>
+          <a href="/products-template.csv" download>Download CSV template</a>
+          <a href="/products-example.csv" download>Download example CSV</a>
+          <a href="/tv-deals.csv" download>Download TV test CSV</a>
+        </div>
+      </form>
+      <p class="status" id="feed-status" role="status" aria-live="polite"></p>
+    </section>
 
-searchForm.addEventListener('submit', (event) => {
-  event.preventDefault();
-  state.searchTerm = searchInput.value.trim();
-  renderProducts();
-});
+    <section class="panel" id="site-panel" aria-labelledby="site-title" hidden>
+      <h2 id="site-title">Homepage content</h2>
+      <p class="helper">Update the homepage hero, brand text, and CMS design settings that appear on the public site.</p>
 
-searchInput.addEventListener('input', (event) => {
-  state.searchTerm = event.target.value.trim();
-  renderProducts();
-});
+      <form id="site-form">
+        <div class="field-grid">
+          <div class="full">
+            <label for="site-siteName">Site name</label>
+            <input id="site-siteName" name="siteName" type="text" placeholder="WhataDeal.uk">
+          </div>
 
-loadProducts();
+          <div class="full">
+            <label for="site-heroTitle">Hero title</label>
+            <input id="site-heroTitle" name="heroTitle" type="text" placeholder="Good finds. Better prices.">
+          </div>
+
+          <div class="full">
+            <label for="site-heroSubtitle">Hero subtitle</label>
+            <textarea id="site-heroSubtitle" name="heroSubtitle" placeholder="A considered collection of useful things, from retailers worth knowing."></textarea>
+          </div>
+
+          <div class="full">
+            <label for="site-heroStamp">Hero stamp text</label>
+            <textarea id="site-heroStamp" name="heroStamp" placeholder="A good deal is a good feeling"></textarea>
+          </div>
+
+          <div class="full">
+            <label for="site-affiliateNotice">Affiliate notice</label>
+            <textarea id="site-affiliateNotice" name="affiliateNotice" placeholder="Affiliate notice text"></textarea>
+          </div>
+
+          <div>
+            <label for="site-ctaLabel">CTA label</label>
+            <input id="site-ctaLabel" name="ctaLabel" type="text" placeholder="Shop now">
+          </div>
+
+          <div>
+            <label for="site-themeAccent">Theme colour</label>
+            <input id="site-themeAccent" name="themeAccent" type="color" value="#164b3c">
+          </div>
+        </div>
+
+        <div class="panel-actions" style="margin-top: 18px;">
+          <button type="submit">Save homepage settings</button>
+        </div>
+      </form>
+      <p class="status" id="site-status" role="status" aria-live="polite"></p>
+    </section>
+  </main>
+</body>
+</html>
+
